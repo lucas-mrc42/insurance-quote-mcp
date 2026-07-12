@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "name": "insurance_quote",
   "title": "Acme Habitation Jeunes — serveur MCP (contrat public)",
-  "contract_version": "0.1.0",
+  "contract_version": "0.2.0",
   "protocol": {
     "type": "mcp",
     "jsonrpc": "2.0",
@@ -37,6 +37,7 @@
     "filtrer_reponse",
     "obtenir_tarif",
     "obtenir_details_mrh",
-    "verifier_discount"
+    "verifier_discount",
+    "obtenir_code_lp"
   ]
 }

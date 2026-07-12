@@ -22,5 +22,5 @@ Doc : https://docs.mistral.ai/le-chat/knowledge-integrations/connectors/mcp-conn
 Le principe est identique : déclarer le serveur MCP distant (URL + en-tête
 `Authorization: Bearer …`) et restreindre la liste d'outils à :
 `ouvrir_session`, `filtrer_message`, `filtrer_reponse`, `obtenir_tarif`,
-`obtenir_details_mrh`, `verifier_discount`. Se reporter à la doc Studio pour la
-signature exacte de l'appel, susceptible d'évoluer.
+`obtenir_details_mrh`, `verifier_discount`, `obtenir_code_lp`. Se reporter à la
+doc Studio pour la signature exacte de l'appel, susceptible d'évoluer.

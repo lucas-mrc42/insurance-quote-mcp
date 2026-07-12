@@ -30,6 +30,7 @@ response = client.messages.create(
                     "obtenir_tarif",
                     "obtenir_details_mrh",
                     "verifier_discount",
+                    "obtenir_code_lp",
                 ],
             },
         }

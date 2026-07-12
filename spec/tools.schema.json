@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Contrat des outils MCP — Acme Habitation Jeunes",
-  "contract_version": "0.1.0",
+  "contract_version": "0.2.0",
   "common_output_fields": {
     "statut": "OK | HITL_SUSPENDED | REFUS | REFUS_VALIDATION | SERVICE_INDISPONIBLE | KILL_SWITCH",
     "code_equivalent": "Équivalent HTTP applicatif : 200 | 422 | 403 | 503",
@@ -102,6 +102,37 @@
         "code_equivalent": 200,
         "remise_applicable": false,
         "verbatim": "Aucune remise disponible…"
+      }
+    },
+    {
+      "name": "obtenir_code_lp",
+      "description": "Code LP (landing page) de routage pour la souscription, selon le réseau d'apport du client. Priorité au `code_reseau` déclaré s'il est connu ; estimation par `departement` sinon. ATTENTION : un client peut conserver le réseau régional de son agence d'origine même après un déménagement hors de son territoire habituel — une estimation par département peut donc être fausse. Vérifier systématiquement le champ `fiabilite` avant usage, et ne jamais présenter une valeur `ESTIMEE_PAR_DEPARTEMENT` ou `INDETERMINEE` comme certaine à l'utilisateur. Référentiel complet : `spec/referentiel-reseaux.json`. Ce contrat ne révèle aucune raison sociale ni marque partenaire ; le mapping entre un réseau déclaré et un `code_reseau` est privé et hors périmètre de ce dépôt.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "lead_token_ephemeral": { "type": "string", "format": "uuid" },
+          "code_reseau": {
+            "type": "string",
+            "pattern": "^\\d{3}$",
+            "description": "Code de réseau déjà connu/déclaré (prioritaire sur `departement`)."
+          },
+          "departement": {
+            "type": "string",
+            "pattern": "^(\\d{2}|2A|2B|97[1-6])$",
+            "description": "Département de résidence ACTUEL du client. Utilisé uniquement à défaut de `code_reseau` connu, à titre d'ESTIMATION (voir avertissement mobilité ci-dessus)."
+          }
+        },
+        "required": ["lead_token_ephemeral"],
+        "additionalProperties": false
+      },
+      "exampleOutput": {
+        "statut": "OK",
+        "code_equivalent": 200,
+        "code_lp": "019",
+        "nom_lp": "Île-de-France",
+        "fiabilite": "ESTIMEE_PAR_DEPARTEMENT",
+        "avertissement": "Estimation par département : si le client a déménagé, il peut avoir conservé le réseau de son agence d'origine (à confirmer si possible).",
+        "code_reseau_candidats": null
       }
     }
   ]
