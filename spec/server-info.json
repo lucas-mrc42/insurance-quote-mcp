@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "insurance_quote",
+  "title": "Acme Habitation Jeunes — serveur MCP (contrat public)",
+  "contract_version": "0.1.0",
+  "protocol": {
+    "type": "mcp",
+    "jsonrpc": "2.0",
+    "transport": "streamable-http",
+    "endpoint_path": "/mcp",
+    "features": ["tools"],
+    "notes": "resources et prompts NON exposés (comme sur le serveur réel)."
+  },
+  "naming": {
+    "server_name": "insurance_quote",
+    "rule": "snake_case, sans tiret — requis par le SDK Google Gemini."
+  },
+  "auth": {
+    "now": "HTTP Bearer (jeton émis par Acme, en-tête Authorization).",
+    "target": "OAuth 2.1 (authorization code + PKCE), dynamic client registration.",
+    "transport_requirement": "HTTPS avec certificat valide (exigé notamment par Mistral Le Chat)."
+  },
+  "sla": {
+    "latency_budget_ms": 2500,
+    "degraded_behavior": "En cas d'indisponibilité interne, un résultat d'outil statut=SERVICE_INDISPONIBLE est renvoyé RAPIDEMENT (jamais un blocage).",
+    "agent_contract": "Un statut SERVICE_INDISPONIBLE doit être restitué tel quel ; l'agent NE DOIT PAS fallbacker sur ses connaissances propres.",
+    "headers": {
+      "X-Duration-Ms": "durée de traitement observée",
+      "X-SLA-Budget-Ms": "budget de latence contractuel",
+      "X-SLA-Breach": "présent (=1) si le budget a été dépassé"
+    },
+    "recommended_client_timeout_ms": 8000
+  },
+  "tools": [
+    "ouvrir_session",
+    "filtrer_message",
+    "filtrer_reponse",
+    "obtenir_tarif",
+    "obtenir_details_mrh",
+    "verifier_discount"
+  ]
+}

@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Secrets — ne JAMAIS committer
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.token
+
+# OS
+.DS_Store

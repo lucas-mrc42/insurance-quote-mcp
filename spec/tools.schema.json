@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Contrat des outils MCP — Acme Habitation Jeunes",
+  "contract_version": "0.1.0",
+  "common_output_fields": {
+    "statut": "OK | HITL_SUSPENDED | REFUS | REFUS_VALIDATION | SERVICE_INDISPONIBLE | KILL_SWITCH",
+    "code_equivalent": "Équivalent HTTP applicatif : 200 | 422 | 403 | 503",
+    "note": "Le transport MCP répond toujours 200 ; la décision est portée par le payload."
+  },
+  "tools": [
+    {
+      "name": "ouvrir_session",
+      "description": "Ouvre une session anonyme. À appeler EN PREMIER. Renvoie le jeton lead éphémère et le disclaimer IA à restituer tel quel.",
+      "inputSchema": { "type": "object", "properties": {}, "additionalProperties": false },
+      "exampleOutput": {
+        "statut": "OK",
+        "code_equivalent": 200,
+        "lead_token_ephemeral": "6f3a…-uuid4",
+        "disclaimer_ia": "Vous échangez avec un assistant IA (exemple)…"
+      }
+    },
+    {
+      "name": "filtrer_message",
+      "description": "À appeler sur CHAQUE message utilisateur AVANT tout traitement par l'agent.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "lead_token_ephemeral": { "type": "string", "format": "uuid" },
+          "message": { "type": "string", "minLength": 1, "maxLength": 2000 }
+        },
+        "required": ["lead_token_ephemeral", "message"],
+        "additionalProperties": false
+      },
+      "exampleOutput": {
+        "statut": "OK",
+        "code_equivalent": 200,
+        "message_filtre": "…",
+        "suspicion_score": 0
+      }
+    },
+    {
+      "name": "filtrer_reponse",
+      "description": "À appeler sur CHAQUE réponse AVANT restitution à l'utilisateur.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "lead_token_ephemeral": { "type": "string", "format": "uuid" },
+          "texte": { "type": "string", "minLength": 1, "maxLength": 8000 }
+        },
+        "required": ["lead_token_ephemeral", "texte"],
+        "additionalProperties": false
+      },
+      "exampleOutput": { "statut": "OK", "code_equivalent": 200, "texte_filtre": "…" }
+    },
+    {
+      "name": "obtenir_tarif",
+      "description": "Tarif officiel Habitation Jeunes. Le tarif n'est JAMAIS calculé par l'agent : il provient exclusivement de cet outil (verbatim figé).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "lead_token_ephemeral": { "type": "string", "format": "uuid" },
+          "age": { "type": "integer", "minimum": 0, "maximum": 130 },
+          "statut_occupant": { "type": "string", "enum": ["LOCATAIRE", "PROPRIETAIRE"] },
+          "type_logement": { "type": "string", "enum": ["T1", "T2", "T3_PLUS", "MAISON"] },
+          "code_postal": { "type": "string", "pattern": "^\\d{5}$" },
+          "option_vol": { "type": "boolean", "default": false }
+        },
+        "required": ["lead_token_ephemeral", "age", "statut_occupant", "type_logement", "code_postal"],
+        "additionalProperties": false
+      },
+      "exampleOutput": {
+        "statut": "OK",
+        "code_equivalent": 200,
+        "eligible": true,
+        "cle_tarifaire": "base",
+        "tarif_verbatim": "XX,XX €/mois (EXEMPLE)",
+        "magic_link": "https://exemple.invalid/souscription?lead_token=…"
+      }
+    },
+    {
+      "name": "obtenir_details_mrh",
+      "description": "Fiche produit Habitation Jeunes (Markdown), à restituer sans altération des conditions.",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "lead_token_ephemeral": { "type": "string", "format": "uuid" } },
+        "required": ["lead_token_ephemeral"],
+        "additionalProperties": false
+      },
+      "exampleOutput": { "statut": "OK", "code_equivalent": 200, "fiche_markdown": "# Habitation Jeunes…" }
+    },
+    {
+      "name": "verifier_discount",
+      "description": "Remise d'orientation uniquement — aucun code promo, aucun effet de bord.",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "lead_token_ephemeral": { "type": "string", "format": "uuid" } },
+        "required": ["lead_token_ephemeral"],
+        "additionalProperties": false
+      },
+      "exampleOutput": {
+        "statut": "OK",
+        "code_equivalent": 200,
+        "remise_applicable": false,
+        "verbatim": "Aucune remise disponible…"
+      }
+    }
+  ]
+}

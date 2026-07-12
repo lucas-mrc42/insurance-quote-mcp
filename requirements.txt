@@ -1,0 +1,4 @@
+# Serveur MCP mock — dépendances minimales (aucune couche métier/sécurité).
+fastapi>=0.115
+uvicorn[standard]>=0.30
+mcp>=1.23            # SDK officiel Model Context Protocol (>= 1.23 : sécurisé par défaut)
