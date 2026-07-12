@@ -23,6 +23,12 @@ Agent (LLM)                         MCP insurance_quote
    |  5. Présenter le magic_link à l'utilisateur (souscription)
 ```
 
+Optionnel — si un routage par réseau d'apport est pertinent pour le client,
+appeler `obtenir_code_lp(token, code_reseau?, departement?)` avant de
+présenter le `magic_link`. Voir RFC §10 : sans `code_reseau` connu, la
+résolution par département n'est qu'une **estimation** (le client peut avoir
+conservé le réseau de son agence d'origine après un déménagement).
+
 ## Règles impératives côté agent
 
 1. **Toujours** appeler `ouvrir_session` en premier et conserver le

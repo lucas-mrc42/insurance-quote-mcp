@@ -18,8 +18,9 @@ d'Acme Assurances.
 | --- | --- |
 | `docs/RFC-001-configuration-agents-et-appel-mcp.md` | RFC : configuration des agents + appel au MCP |
 | `docs/session-flow.md` | Cycle de vie d'une session et du jeton lead |
-| `spec/tools.schema.json` | Contrat formel versionné des 6 outils (entrées/sorties) |
+| `spec/tools.schema.json` | Contrat formel versionné des 7 outils (entrées/sorties) |
 | `spec/server-info.json` | Métadonnées du serveur (nom, version, transport) |
+| `spec/referentiel-reseaux.json` | Référentiel d'exemple des réseaux d'apport (codes, zones géographiques) |
 | `mock_server/server.py` | Serveur MCP **mock** exécutable (réponses d'exemple) |
 | `examples/` | Configurations prêtes à l'emploi par fournisseur |
 
@@ -36,7 +37,7 @@ exactement comme le serveur réel. Il renvoie des **données d'exemple** clairem
 marquées et **n'applique aucune règle de sécurité** — il sert à valider votre
 intégration (découverte des outils, enchaînement des appels, gestion du jeton).
 
-## Les 6 outils exposés
+## Les 7 outils exposés
 
 1. `ouvrir_session` — ouvre une session anonyme, renvoie le `lead_token_ephemeral` + le disclaimer IA.
 2. `filtrer_message` — à appeler sur chaque message utilisateur **avant** traitement.
@@ -44,6 +45,9 @@ intégration (découverte des outils, enchaînement des appels, gestion du jeton
 4. `obtenir_tarif` — tarif officiel Habitation Jeunes (jamais calculé côté agent).
 5. `obtenir_details_mrh` — fiche produit.
 6. `verifier_discount` — remise d'orientation (aucun code promo).
+7. `obtenir_code_lp` — code LP (landing page) de routage selon le réseau d'apport du
+   client. Estimation par département uniquement si le code réseau n'est pas connu —
+   voir RFC §10 pour la règle de mobilité.
 
 ## Nom du serveur
 

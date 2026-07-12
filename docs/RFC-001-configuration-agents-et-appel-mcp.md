@@ -15,7 +15,7 @@ respecter le **SLA** qui conditionne la conversion (un agent qui *fallback* perd
 
 ## 2. Vue d'ensemble
 
-Le serveur expose **6 outils** via le protocole **MCP natif** (JSON-RPC 2.0,
+Le serveur expose **7 outils** via le protocole **MCP natif** (JSON-RPC 2.0,
 transport *streamable HTTP*), sur l'endpoint `POST /mcp`. Seules les capacités
 **tools** sont exposées (pas de `resources` ni `prompts`). L'agent :
 
@@ -108,6 +108,33 @@ Le contrat est versionné (`contract_version` dans `spec/server-info.json`). Tou
 l'objet d'une montée de version majeure et d'une communication aux partenaires. Les
 ajouts rétrocompatibles (nouvel outil, champ de sortie optionnel) sont mineurs.
 
-## 10. Support
+## 10. Routage réseau d'apport (code LP)
+
+L'outil `obtenir_code_lp` détermine le code de landing page à utiliser pour la
+souscription selon le réseau d'apport du client. Référentiel D'EXEMPLE (fictif,
+comme le reste de ce dépôt) : [`../spec/referentiel-reseaux.json`](../spec/referentiel-reseaux.json).
+
+**Règle impérative — mobilité du client :** un client peut rester rattaché au
+réseau régional de son agence d'origine **même s'il déménage hors de ce
+territoire**. Le département de résidence actuel n'est donc jamais une source
+fiable à 100 % : il ne sert qu'à **estimer** le réseau quand le `code_reseau`
+n'est pas déjà connu. En conséquence :
+
+1. Si le `code_reseau` est connu (déclaré par le client ou fourni par un
+   système amont), le transmettre : la résolution est alors **exacte**.
+2. Sinon, transmettre le `departement` de résidence actuel : la résolution est
+   **estimée** (`fiabilite = ESTIMEE_PAR_DEPARTEMENT`) et l'agent **ne doit
+   jamais présenter ce résultat comme certain** — reformuler l'avertissement
+   renvoyé, ou proposer à l'utilisateur de confirmer son réseau d'origine si
+   l'exactitude est déterminante.
+3. Si un département venait à être rattaché à plusieurs réseaux régionaux
+   limitrophes (référentiel amené à évoluer), l'outil renvoie
+   `fiabilite = INDETERMINEE`, un code LP de repli générique et la liste
+   `code_reseau_candidats` : ne pas choisir arbitrairement entre les
+   candidats, demander confirmation au client.
+4. Certains réseaux sont **nationaux** (pas de notion de département) :
+   résolution toujours **exacte** dès lors que le `code_reseau` est fourni.
+
+## 11. Support
 
 Contact d'intégration : à compléter par Acme (canal partenaire, adresse, SLA support).

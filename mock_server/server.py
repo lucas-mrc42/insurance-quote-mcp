@@ -34,6 +34,7 @@ from mock_server.example_data import (
     MAGIC_LINK_TEMPLATE,
     exemple_tarif,
 )
+from mock_server.reseaux import resoudre_code_lp
 
 SLA_BUDGET_MS = int(os.environ.get("MCP_SLA_BUDGET_MS", "2500"))
 
@@ -119,6 +120,30 @@ def verifier_discount(lead_token_ephemeral: str) -> dict[str, Any]:
     if not lead_token_ephemeral:
         return {"statut": "REFUS", "code_equivalent": 403, "message": "jeton requis (exemple)"}
     return _ok(remise_applicable=False, verbatim="Aucune remise dans cet exemple.")
+
+
+@mcp.tool()
+def obtenir_code_lp(
+    lead_token_ephemeral: str,
+    code_reseau: str | None = None,
+    departement: str | None = None,
+) -> dict[str, Any]:
+    """Code LP de routage selon le réseau d'apport du client.
+
+    Priorité au `code_reseau` déclaré s'il est connu. À défaut, `departement`
+    ne donne qu'une ESTIMATION : un client peut garder le réseau régional de
+    son agence d'origine même après un déménagement (voir `fiabilite` en sortie).
+    """
+    if not lead_token_ephemeral:
+        return {"statut": "REFUS", "code_equivalent": 403, "message": "jeton requis (exemple)"}
+    if not code_reseau and not departement:
+        return {
+            "statut": "REFUS_VALIDATION",
+            "code_equivalent": 422,
+            "message": "code_reseau ou departement requis (exemple)",
+        }
+    resultat = resoudre_code_lp(code_reseau, departement)
+    return _ok(**resultat)
 
 
 @asynccontextmanager
