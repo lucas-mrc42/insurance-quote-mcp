@@ -1,12 +1,10 @@
-"""Résolution du code LP (landing page) — réseaux d'apport partenaires.
+"""Résolution du code LP (landing page) — réseaux d'apport (EXEMPLE).
 
-Le référentiel (`spec/referentiel-reseaux.json`) ne contient volontairement
-aucune raison sociale ni marque partenaire : uniquement des codes, des noms de
-zone géographique génériques, et des départements. Le mapping entre un réseau
-déclaré par un client et son `code_reseau` est une information privée d'Acme,
-hors périmètre de ce dépôt public.
+Le référentiel (`spec/referentiel-reseaux.json`) est un jeu de données
+D'EXEMPLE, comme le reste de ce dépôt : codes, noms de zone géographique et
+départements sont fictifs et ne correspondent à aucun réseau réel.
 
-Règle métier centrale : un client peut conserver le réseau régional de son
+Règle métier illustrée : un client peut conserver le réseau régional de son
 agence d'origine même après un déménagement hors de son territoire habituel.
 Une estimation par département n'est donc jamais une certitude — d'où le
 champ `fiabilite` renvoyé à l'appelant.

@@ -111,11 +111,8 @@ ajouts rétrocompatibles (nouvel outil, champ de sortie optionnel) sont mineurs.
 ## 10. Routage réseau d'apport (code LP)
 
 L'outil `obtenir_code_lp` détermine le code de landing page à utiliser pour la
-souscription selon le réseau d'apport du client. Référentiel complet, purement
-générique (aucune raison sociale ni marque partenaire) :
-[`../spec/referentiel-reseaux.json`](../spec/referentiel-reseaux.json). Le
-mapping entre un réseau que le client déclare et un `code_reseau` est une
-information privée d'Acme, injectée côté partenaire hors de ce dépôt public.
+souscription selon le réseau d'apport du client. Référentiel D'EXEMPLE (fictif,
+comme le reste de ce dépôt) : [`../spec/referentiel-reseaux.json`](../spec/referentiel-reseaux.json).
 
 **Règle impérative — mobilité du client :** un client peut rester rattaché au
 réseau régional de son agence d'origine **même s'il déménage hors de ce

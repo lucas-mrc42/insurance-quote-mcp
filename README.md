@@ -20,7 +20,7 @@ d'Acme Assurances.
 | `docs/session-flow.md` | Cycle de vie d'une session et du jeton lead |
 | `spec/tools.schema.json` | Contrat formel versionné des 7 outils (entrées/sorties) |
 | `spec/server-info.json` | Métadonnées du serveur (nom, version, transport) |
-| `spec/referentiel-reseaux.json` | Référentiel générique des réseaux d'apport (codes, zones géographiques) |
+| `spec/referentiel-reseaux.json` | Référentiel d'exemple des réseaux d'apport (codes, zones géographiques) |
 | `mock_server/server.py` | Serveur MCP **mock** exécutable (réponses d'exemple) |
 | `examples/` | Configurations prêtes à l'emploi par fournisseur |
 
@@ -47,8 +47,7 @@ intégration (découverte des outils, enchaînement des appels, gestion du jeton
 6. `verifier_discount` — remise d'orientation (aucun code promo).
 7. `obtenir_code_lp` — code LP (landing page) de routage selon le réseau d'apport du
    client. Estimation par département uniquement si le code réseau n'est pas connu —
-   voir RFC §10 pour la règle de mobilité. Aucune raison sociale ni marque partenaire
-   dans ce contrat public (référentiel purement générique).
+   voir RFC §10 pour la règle de mobilité.
 
 ## Nom du serveur
 

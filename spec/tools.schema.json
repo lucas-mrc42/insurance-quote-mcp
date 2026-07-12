@@ -106,7 +106,7 @@
     },
     {
       "name": "obtenir_code_lp",
-      "description": "Code LP (landing page) de routage pour la souscription, selon le réseau d'apport du client. Priorité au `code_reseau` déclaré s'il est connu ; estimation par `departement` sinon. ATTENTION : un client peut conserver le réseau régional de son agence d'origine même après un déménagement hors de son territoire habituel — une estimation par département peut donc être fausse. Vérifier systématiquement le champ `fiabilite` avant usage, et ne jamais présenter une valeur `ESTIMEE_PAR_DEPARTEMENT` ou `INDETERMINEE` comme certaine à l'utilisateur. Référentiel complet : `spec/referentiel-reseaux.json`. Ce contrat ne révèle aucune raison sociale ni marque partenaire ; le mapping entre un réseau déclaré et un `code_reseau` est privé et hors périmètre de ce dépôt.",
+      "description": "Code LP (landing page) de routage pour la souscription, selon le réseau d'apport du client. Priorité au `code_reseau` déclaré s'il est connu ; estimation par `departement` sinon. ATTENTION : un client peut conserver le réseau régional de son agence d'origine même après un déménagement hors de son territoire habituel — une estimation par département peut donc être fausse. Vérifier systématiquement le champ `fiabilite` avant usage, et ne jamais présenter une valeur `ESTIMEE_PAR_DEPARTEMENT` ou `INDETERMINEE` comme certaine à l'utilisateur. Référentiel complet (EXEMPLE) : `spec/referentiel-reseaux.json`.",
       "inputSchema": {
         "type": "object",
         "properties": {

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Référentiel des réseaux d'apport (routage code LP)",
-  "note": "Utilisé par l'outil `obtenir_code_lp` (voir spec/tools.schema.json). Données purement génériques : aucune raison sociale, aucune marque partenaire. Le mapping réel entre un réseau déclaré par un client et un `code_reseau` est une information privée d'Acme, hors périmètre de ce dépôt public.",
+  "note": "Utilisé par l'outil `obtenir_code_lp` (voir spec/tools.schema.json). Données D'EXEMPLE (fictives), au même titre que le reste de ce dépôt (cf. README) : codes, noms de zones et découpage par département ne correspondent à aucun réseau réel ni à aucune marque.",
   "reseaux": [
     { "code_reseau": "001", "nom": "Alpes Provence", "departements": ["05", "13", "84"] },
     { "code_reseau": "002", "nom": "Alsace Vosges", "departements": ["67", "68", "88"] },
