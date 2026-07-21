@@ -7,7 +7,7 @@ L'agent conversationnel doit respecter cet enchaînement. Le jeton
 ```
 Agent (LLM)                         MCP insurance_quote
    |                                       |
-   |  1. tools/call ouvrir_session ------->|
+   |  1. tools/call ouvrir_session(ref?) ->|   ref = reference_partenaire (optionnel)
    |<--- lead_token_ephemeral + disclaimer |
    |  (afficher le disclaimer tel quel)    |
    |                                       |

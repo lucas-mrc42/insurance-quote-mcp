@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Contrat des outils MCP — Acme Habitation Jeunes",
-  "contract_version": "0.2.0",
+  "contract_version": "0.3.0",
   "common_output_fields": {
     "statut": "OK | HITL_SUSPENDED | REFUS | REFUS_VALIDATION | SERVICE_INDISPONIBLE | KILL_SWITCH",
     "code_equivalent": "Équivalent HTTP applicatif : 200 | 422 | 403 | 503",
@@ -10,13 +10,24 @@
   "tools": [
     {
       "name": "ouvrir_session",
-      "description": "Ouvre une session anonyme. À appeler EN PREMIER. Renvoie le jeton lead éphémère et le disclaimer IA à restituer tel quel.",
-      "inputSchema": { "type": "object", "properties": {}, "additionalProperties": false },
+      "description": "Ouvre une session anonyme. À appeler EN PREMIER. Renvoie le jeton lead éphémère et le disclaimer IA à restituer tel quel. `reference_partenaire` est optionnel : identifiant opaque fourni par le partenaire à des fins d'attribution (ex. campagne, opportunité) — jamais une donnée personnelle du prospect.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "reference_partenaire": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Identifiant opaque côté partenaire (campagne, id d'opportunité...). Aucune donnée personnelle. Corrélé en interne au lead_token_ephemeral pour l'attribution ; jamais interprété ni validé par ce contrat."
+          }
+        },
+        "additionalProperties": false
+      },
       "exampleOutput": {
         "statut": "OK",
         "code_equivalent": 200,
         "lead_token_ephemeral": "6f3a…-uuid4",
-        "disclaimer_ia": "Vous échangez avec un assistant IA (exemple)…"
+        "disclaimer_ia": "Vous échangez avec un assistant IA (exemple)…",
+        "reference_partenaire": null
       }
     },
     {
