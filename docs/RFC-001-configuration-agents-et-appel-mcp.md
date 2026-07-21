@@ -13,6 +13,30 @@ Décrire comment configurer un agent conversationnel pour consommer le serveur M
 de l'offre **Habitation Jeunes**, appeler les bons outils, gérer le **jeton lead**, et
 respecter le **SLA** qui conditionne la conversion (un agent qui *fallback* perd le lead).
 
+### 1.1 Positionnement stratégique — pourquoi MCP et rien de propriétaire
+
+Ce serveur expose **exclusivement le protocole MCP natif** (JSON-RPC 2.0,
+streamable HTTP), volontairement **agnostique du fournisseur** (Anthropic,
+OpenAI, Google, Mistral, ou tout futur entrant). C'est un choix délibéré :
+
+- **Aucun connecteur propriétaire ne sera développé.** Une intégration
+  spécifique à un fournisseur (ex. un plugin/action propre à une plateforme)
+  coûte à maintenir et diverge à chaque évolution de l'API du fournisseur.
+  MCP étant un standard ouvert supporté nativement par l'ensemble des
+  fournisseurs ciblés, c'est le seul point d'intégration proposé.
+- **Les surfaces qui ne parlent pas MCP (ni function calling générique)
+  sont explicitement hors périmètre.** C'est le cas par exemple des **Gems**
+  Google (persona de l'app grand public gemini.google.com) : elles ne
+  supportent aucun appel d'outil tiers en temps réel. Un agent Gemini doit
+  passer par l'**API Gemini / Vertex AI** (function calling natif, support
+  MCP expérimental — voir `examples/google_genai.py`) ; il n'y aura pas de
+  pont spécifique construit pour contourner cette limitation côté Gems.
+- **Ce serveur MCP est une solution d'attente**, le temps qu'une solution
+  d'interopérabilité agent-à-agent (entre l'agent du client et l'agent
+  d'Acme) soit disponible ; elle est en cours de réflexion et hors périmètre
+  de ce dépôt. Le contrat MCP restera donc volontairement minimal plutôt que
+  d'accumuler des adaptations propriétaires vouées à être remplacées.
+
 ## 2. Vue d'ensemble
 
 Le serveur expose **7 outils** via le protocole **MCP natif** (JSON-RPC 2.0,

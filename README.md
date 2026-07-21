@@ -12,6 +12,13 @@ d'Acme Assurances.
 > secret et aucune donnée de production. Le serveur MCP réel d'Acme est hébergé et
 > distinct de ce dépôt.
 
+> **Positionnement** : intégration volontairement **agnostique du fournisseur**, via
+> le seul protocole MCP natif — pas de connecteur propriétaire par plateforme. Les
+> surfaces qui ne parlent pas MCP/function calling générique (ex. les **Gems**
+> Google) sont hors périmètre : voir RFC §1.1. Ce serveur MCP est une solution
+> d'attente, en amont d'une future solution d'interopérabilité agent-à-agent
+> (en cours de réflexion côté Acme).
+
 ## Contenu
 
 | Chemin | Rôle |
