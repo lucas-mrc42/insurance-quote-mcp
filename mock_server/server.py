@@ -60,12 +60,18 @@ def _ok(**champs: Any) -> dict[str, Any]:
 
 
 @mcp.tool()
-def ouvrir_session() -> dict[str, Any]:
+def ouvrir_session(reference_partenaire: str | None = None) -> dict[str, Any]:
     """Ouvre une session anonyme et renvoie le jeton éphémère + disclaimer IA.
 
     À appeler EN PREMIER. Le disclaimer doit être restitué tel quel à l'utilisateur.
+    `reference_partenaire` (optionnel) : identifiant opaque d'attribution fourni
+    par le partenaire, jamais interprété (mock : simplement renvoyé tel quel).
     """
-    return _ok(lead_token_ephemeral=str(uuid.uuid4()), disclaimer_ia=DISCLAIMER_IA)
+    return _ok(
+        lead_token_ephemeral=str(uuid.uuid4()),
+        disclaimer_ia=DISCLAIMER_IA,
+        reference_partenaire=reference_partenaire,
+    )
 
 
 @mcp.tool()

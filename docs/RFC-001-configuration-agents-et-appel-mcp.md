@@ -1,7 +1,7 @@
 # RFC-001 — Configuration des agents conversationnels et appel au MCP Habitation Jeunes
 
 - **Statut** : Draft
-- **Version du contrat** : 0.1.0
+- **Version du contrat** : 0.3.0
 - **Public** : partenaires intégrant un agent LLM (OpenAI, Anthropic, Google, Mistral)
 - **Portée** : ce document et ce dépôt décrivent **uniquement le contrat public**.
   L'implémentation réelle (couches de sécurité, backend, règles métier) est privée
@@ -36,6 +36,40 @@ OpenAI, Google, Mistral, ou tout futur entrant). C'est un choix délibéré :
   d'Acme) soit disponible ; elle est en cours de réflexion et hors périmètre
   de ce dépôt. Le contrat MCP restera donc volontairement minimal plutôt que
   d'accumuler des adaptations propriétaires vouées à être remplacées.
+
+### 1.2 Attribution partenaire et vigilance « enchère temps réel »
+
+`ouvrir_session` accepte un `reference_partenaire` optionnel et opaque
+(identifiant de campagne/opportunité côté partenaire, jamais une donnée
+personnelle du prospect) pour permettre l'attribution d'un lead à son
+apporteur. Tant qu'aucune information spécifique n'a été échangée avec
+l'agent (pas d'appel portant des attributs de tarification), le prospect
+reste conventionnellement dans le funnel du partenaire, pas dans celui
+d'Acme : le premier appel à `obtenir_tarif` est le marqueur objectif de
+bascule.
+
+**Point de vigilance (hors périmètre technique de ce contrat) :** un
+partenaire — ou un fournisseur de plateforme LLM — pourrait chercher à
+mettre un prospect en concurrence entre plusieurs assureurs façon enchère
+publicitaire temps réel (type RTB), et n'attribuer la conversation qu'à
+l'assureur le mieux offrant. Deux conséquences à anticiper :
+
+1. **Latence incompatible avec MCP.** Une enchère RTB se joue en dizaines de
+   millisecondes, très en dessous du budget SLA de ce contrat (2500 ms,
+   §6). Une telle enchère ne peut donc pas avoir lieu *à l'intérieur* d'un
+   appel d'outil MCP : elle se déroulerait nécessairement en amont, sur un
+   système dédié, et ce contrat ne serait sollicité qu'*après* attribution,
+   par l'assureur gagnant. `reference_partenaire` est délibérément assez
+   générique pour porter, plus tard, un identifiant d'opportunité/enchère
+   sans rupture de compatibilité — mais aucun mécanisme d'enchère n'est, et
+   ne sera, implémenté dans ce contrat MCP.
+2. **Dépendance conformité non résolue.** La mise en concurrence d'un
+   prospect entre assureurs soulève des questions de fond (qualification
+   d'intermédiaire en assurance de l'organisateur de l'enchère, respect du
+   critère DDA du meilleur intérêt du client, base légale RGPD pour le
+   partage des données du prospect à plusieurs assureurs concurrents) qui
+   relèvent du juridique/conformité d'Acme, pas de ce dépôt technique. Ce
+   scénario ne doit pas être construit avant validation de ces points.
 
 ## 2. Vue d'ensemble
 
