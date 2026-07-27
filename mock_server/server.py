@@ -60,18 +60,17 @@ def _ok(**champs: Any) -> dict[str, Any]:
 
 
 @mcp.tool()
-def ouvrir_session(reference_partenaire: str | None = None) -> dict[str, Any]:
+def ouvrir_session(campagne: str = "inconnue") -> dict[str, Any]:
     """Ouvre une session anonyme et renvoie le jeton éphémère + disclaimer IA.
 
     À appeler EN PREMIER. Le disclaimer doit être restitué tel quel à l'utilisateur.
-    `reference_partenaire` (optionnel) : identifiant opaque d'attribution fourni
-    par le partenaire, jamais interprété (mock : simplement renvoyé tel quel).
+
+    `campagne` (facultatif) : identifiant de campagne d'acquisition (UTM),
+    utilisé UNIQUEMENT pour l'analytics funnel anonyme côté serveur réel —
+    aucune donnée personnelle n'y est associée. Le mock l'accepte et l'ignore.
     """
-    return _ok(
-        lead_token_ephemeral=str(uuid.uuid4()),
-        disclaimer_ia=DISCLAIMER_IA,
-        reference_partenaire=reference_partenaire,
-    )
+    _ = campagne  # accepté pour conformité au contrat ; sans effet dans le mock
+    return _ok(lead_token_ephemeral=str(uuid.uuid4()), disclaimer_ia=DISCLAIMER_IA)
 
 
 @mcp.tool()

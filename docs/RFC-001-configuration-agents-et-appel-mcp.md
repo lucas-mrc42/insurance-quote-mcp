@@ -39,9 +39,9 @@ OpenAI, Google, Mistral, ou tout futur entrant). C'est un choix délibéré :
 
 ### 1.2 Attribution partenaire et vigilance « enchère temps réel »
 
-`ouvrir_session` accepte un `reference_partenaire` optionnel et opaque
-(identifiant de campagne/opportunité côté partenaire, jamais une donnée
-personnelle du prospect) pour permettre l'attribution d'un lead à son
+`ouvrir_session` accepte un `campagne` optionnel et opaque (identifiant de
+campagne d'acquisition, type UTM, jamais une donnée personnelle du prospect)
+qui alimente le funnel anonyme et permet d'attribuer un lead à son
 apporteur. Tant qu'aucune information spécifique n'a été échangée avec
 l'agent (pas d'appel portant des attributs de tarification), le prospect
 reste conventionnellement dans le funnel du partenaire, pas dans celui
@@ -59,10 +59,11 @@ l'assureur le mieux offrant. Deux conséquences à anticiper :
    §6). Une telle enchère ne peut donc pas avoir lieu *à l'intérieur* d'un
    appel d'outil MCP : elle se déroulerait nécessairement en amont, sur un
    système dédié, et ce contrat ne serait sollicité qu'*après* attribution,
-   par l'assureur gagnant. `reference_partenaire` est délibérément assez
-   générique pour porter, plus tard, un identifiant d'opportunité/enchère
-   sans rupture de compatibilité — mais aucun mécanisme d'enchère n'est, et
-   ne sera, implémenté dans ce contrat MCP.
+   par l'assureur gagnant. `campagne` est délibérément assez générique pour
+   porter, plus tard, un identifiant d'opportunité ou d'enchère ; si le besoin
+   d'attribution se précise, un champ dédié pourra être ajouté en version
+   mineure (ajout rétrocompatible, §9). Mais aucun mécanisme d'enchère n'est,
+   et ne sera, implémenté dans ce contrat MCP.
 2. **Dépendance conformité non résolue.** La mise en concurrence d'un
    prospect entre assureurs soulève des questions de fond (qualification
    d'intermédiaire en assurance de l'organisateur de l'enchère, respect du
@@ -77,7 +78,8 @@ Le serveur expose **7 outils** via le protocole **MCP natif** (JSON-RPC 2.0,
 transport *streamable HTTP*), sur l'endpoint `POST /mcp`. Seules les capacités
 **tools** sont exposées (pas de `resources` ni `prompts`). L'agent :
 
-1. ouvre une session (`ouvrir_session`) et récupère un `lead_token_ephemeral` ;
+1. ouvre une session (`ouvrir_session`, avec l'identifiant de `campagne` UTM s'il est
+   connu — analytics funnel anonyme uniquement) et récupère un `lead_token_ephemeral` ;
 2. filtre chaque message et chaque réponse (`filtrer_message`, `filtrer_reponse`) ;
 3. obtient le tarif et la fiche via les outils (jamais par calcul propre) ;
 4. présente le `magic_link` de souscription.

@@ -7,7 +7,7 @@ L'agent conversationnel doit respecter cet enchaînement. Le jeton
 ```
 Agent (LLM)                         MCP insurance_quote
    |                                       |
-   |  1. tools/call ouvrir_session(ref?) ->|   ref = reference_partenaire (optionnel)
+   |  1. tools/call ouvrir_session(campagne?)->|
    |<--- lead_token_ephemeral + disclaimer |
    |  (afficher le disclaimer tel quel)    |
    |                                       |
@@ -23,16 +23,32 @@ Agent (LLM)                         MCP insurance_quote
    |  5. Présenter le magic_link à l'utilisateur (souscription)
 ```
 
-Optionnel — si un routage par réseau d'apport est pertinent pour le client,
-appeler `obtenir_code_lp(token, code_reseau?, departement?)` avant de
-présenter le `magic_link`. Voir RFC §10 : sans `code_reseau` connu, la
-résolution par département n'est qu'une **estimation** (le client peut avoir
-conservé le réseau de son agence d'origine après un déménagement).
+Optionnel — routage par réseau d'apport, avant de présenter le `magic_link` :
+
+```
+   |  4b. Question d'affiliation à l'utilisateur :
+   |      « Êtes-vous déjà client d'un réseau ? »
+   |      → réseau régional / national A / national B / aucun (courtage)
+   |
+   |  4c. obtenir_code_lp(token, code_reseau?, departement?) ----->|
+   |<--- code_lp + nom_lp + fiabilite + avertissement            |
+   |      (réseau régional : sans code_reseau, transmettre le
+   |       departement — résolution ESTIMEE, cf. règle de mobilité)
+```
+
+Voir RFC §10 : sans `code_reseau` connu, la résolution par département n'est
+qu'une **estimation** (le client peut avoir conservé le réseau de son agence
+d'origine après un déménagement) — l'agent ne présente jamais ce résultat comme
+certain et reformule l'`avertissement` renvoyé. Le `code_lp` obtenu personnalise
+alors le `magic_link`.
 
 ## Règles impératives côté agent
 
 1. **Toujours** appeler `ouvrir_session` en premier et conserver le
-   `lead_token_ephemeral` pour tous les appels suivants.
+   `lead_token_ephemeral` pour tous les appels suivants. Si l'agent connaît
+   l'identifiant de campagne d'acquisition (UTM) à l'origine de la conversation,
+   le transmettre via le paramètre facultatif `campagne` : il n'alimente que
+   l'analytics funnel **anonyme** côté serveur (aucune donnée personnelle).
 2. **Ne jamais** inventer un tarif, une garantie ou une remise : toute donnée
    provient des outils (`obtenir_tarif`, `obtenir_details_mrh`, `verifier_discount`).
 3. Restituer le **disclaimer IA** tel quel dès le premier échange.

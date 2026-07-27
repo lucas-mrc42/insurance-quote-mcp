@@ -10,14 +10,14 @@
   "tools": [
     {
       "name": "ouvrir_session",
-      "description": "Ouvre une session anonyme. À appeler EN PREMIER. Renvoie le jeton lead éphémère et le disclaimer IA à restituer tel quel. `reference_partenaire` est optionnel : identifiant opaque fourni par le partenaire à des fins d'attribution (ex. campagne, opportunité) — jamais une donnée personnelle du prospect.",
+      "description": "Ouvre une session anonyme. À appeler EN PREMIER. Renvoie le jeton lead éphémère et le disclaimer IA à restituer tel quel. `campagne` (facultatif) : identifiant de campagne d'acquisition (UTM), utilisé UNIQUEMENT pour l'analytics funnel anonyme côté serveur — aucune donnée personnelle n'y est associée.",
       "inputSchema": {
         "type": "object",
         "properties": {
-          "reference_partenaire": {
+          "campagne": {
             "type": "string",
             "maxLength": 200,
-            "description": "Identifiant opaque côté partenaire (campagne, id d'opportunité...). Aucune donnée personnelle. Corrélé en interne au lead_token_ephemeral pour l'attribution ; jamais interprété ni validé par ce contrat."
+            "description": "Identifiant de campagne d'acquisition (UTM), ex. « rentree2026-etudiants ». Facultatif ; « inconnue » par défaut."
           }
         },
         "additionalProperties": false
@@ -26,8 +26,7 @@
         "statut": "OK",
         "code_equivalent": 200,
         "lead_token_ephemeral": "6f3a…-uuid4",
-        "disclaimer_ia": "Vous échangez avec un assistant IA (exemple)…",
-        "reference_partenaire": null
+        "disclaimer_ia": "Vous échangez avec un assistant IA (exemple)…"
       }
     },
     {

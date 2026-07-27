@@ -46,7 +46,7 @@ intégration (découverte des outils, enchaînement des appels, gestion du jeton
 
 ## Les 7 outils exposés
 
-1. `ouvrir_session` — ouvre une session anonyme, renvoie le `lead_token_ephemeral` + le disclaimer IA.
+1. `ouvrir_session` — ouvre une session anonyme (param facultatif `campagne` : tag UTM pour le funnel anonyme), renvoie le `lead_token_ephemeral` + le disclaimer IA.
 2. `filtrer_message` — à appeler sur chaque message utilisateur **avant** traitement.
 3. `filtrer_reponse` — à appeler sur chaque réponse **avant** restitution à l'utilisateur.
 4. `obtenir_tarif` — tarif officiel Habitation Jeunes (jamais calculé côté agent).
