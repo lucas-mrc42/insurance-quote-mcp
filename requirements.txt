@@ -1,4 +1,6 @@
-# Serveur MCP mock — dépendances minimales (aucune couche métier/sécurité).
+# Serveur MCP mock + kit de conformité — dépendances minimales
+# (aucune couche métier, aucune couche de sécurité, aucun secret).
 fastapi>=0.115
 uvicorn[standard]>=0.30
 mcp>=1.23            # SDK officiel Model Context Protocol (>= 1.23 : sécurisé par défaut)
+httpx>=0.27          # client du kit de conformité (`python -m conformance`)

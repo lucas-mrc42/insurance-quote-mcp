@@ -17,3 +17,7 @@ venv/
 
 # OS
 .DS_Store
+
+# Rapports produits par le kit de conformité (artefacts locaux)
+rapports/
+rapport-conformite.*
